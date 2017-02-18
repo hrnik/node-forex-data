@@ -9,10 +9,21 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+
+ socket.on('connect', function () { // TIP: you can avoid listening on `connect` and listen on events directly too!
+    socket.emit('getHistory', 's', function(data){
+		console.log('history', data)
+	});
+  });
+
   socket.on('tick', function(msg){
    console.log(msg)
-
   });
+
+ socket.on('historyTicks', function(msg){
+   console.log('historyTicks', msg)
+  });
+
 </script>
 </body>
 </html>

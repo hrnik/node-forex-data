@@ -60,10 +60,7 @@ function getDate() {
 }
 
 const isEmmit = {}
-
-
-io.on('connection', function (socket) {
-	console.log('a user connected');
+const historyTicks = []
 
 
 	function emitTick() {
@@ -73,8 +70,14 @@ io.on('connection', function (socket) {
 				data: getDate()
 			})
 			.value()
+
+
 		console.log(isEmmit)
 		if (tick && !isEmmit[tick.data]) {
+			if(historyTicks.length === 30) {
+				historyTicks.shift()
+			}
+			historyTicks.push(tick)
 			isEmmit[tick.data] = true
 			io.emit('tick', tick);
 		}
@@ -82,6 +85,12 @@ io.on('connection', function (socket) {
 	}
 	emitTick()
 
+io.on('connection', function (socket) {
+	console.log('a user connected');
+
+	socket.on('getHistory', function (name, fn) {
+		fn(historyTicks)
+	});
 	socket.on('disconnect', function () {
 		console.log('user disconnected');
 	});

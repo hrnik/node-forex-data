@@ -79,7 +79,10 @@ const historyTicks = []
 			}
 			historyTicks.push(tick)
 			isEmmit[tick.data] = true
-			io.emit('tick', tick);
+			io.emit('tick', {
+				time: tick.data,
+				ask: tick.ask
+			});
 		}
 		setTimeout(emitTick, 1000);
 	}

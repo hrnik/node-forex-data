@@ -79,7 +79,7 @@ const historyTicks = [{
     if (!tick) {
 		  tick = {
         data : date,
-        ask  : Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.00002 - 0.00001
+        ask  : Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.000002 - 0.000001
       }
     }
     if (isEmmit[tick.data])  {

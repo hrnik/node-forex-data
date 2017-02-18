@@ -55,28 +55,31 @@ app.get('/generate', function (req, res) {
 })
 
 
-function getDate(){
+function getDate() {
 	return '2016' + moment().format('MMDDHHmmss')
 }
+
+const isEmmit = {}
+
 
 io.on('connection', function (socket) {
 	console.log('a user connected');
 
-	const isEmmit = {}
-	function emitTick(imag) {
+
+	function emitTick() {
 
 		const tick = db.get('ticks')
-		.find({
-			data: getDate()
-		})
-		.value()
-		if(tick && !isEmmit[tick.data]){
+			.find({
+				data: getDate()
+			})
+			.value()
+		console.log(isEmmit)
+		if (tick && !isEmmit[tick.data]) {
 			isEmmit[tick.data] = true
 			io.emit('tick', tick);
 		}
 		setTimeout(emitTick, 1000);
 	}
-
 	emitTick()
 
 	socket.on('disconnect', function () {

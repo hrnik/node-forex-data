@@ -78,8 +78,8 @@ const historyTicks = [{
 		console.log(isEmmit)
     if (!tick) {
 		  tick = {
-        data: date,
-        ask: Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.00002 - 0.00001
+        data : date,
+        ask  : Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.00002 - 0.00001
       }
     }
     if (isEmmit[tick.data])  {
@@ -91,8 +91,9 @@ const historyTicks = [{
 				historyTicks.shift()
 			}
 			const transformTick = {
-				time: tick.data,
-				ask: tick.ask
+				time  : tick.data,
+				ask   : tick.ask,
+        stamp : Math.ceil(Date.now()/1000) // возвращаю секунды
 			}
 			historyTicks.push(transformTick)
 			isEmmit[tick.data] = true

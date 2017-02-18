@@ -77,12 +77,13 @@ const historyTicks = []
 			if(historyTicks.length === 30) {
 				historyTicks.shift()
 			}
-			historyTicks.push(tick)
-			isEmmit[tick.data] = true
-			io.emit('tick', {
+			const transformTick = {
 				time: tick.data,
 				ask: tick.ask
-			});
+			}
+			historyTicks.push(transformTick)
+			isEmmit[tick.data] = true
+			io.emit('tick',transformTick);
 		}
 		setTimeout(emitTick, 1000);
 	}

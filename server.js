@@ -67,6 +67,7 @@ const historyTicks = [{
 
 	function emitTick() {
     const date = getDate()
+    const stamp = Math.ceil(Date.now()/1000)
 
 		let tick = db.get('ticks')
 			.find({
@@ -78,8 +79,10 @@ const historyTicks = [{
 		console.log(isEmmit)
     if (!tick) {
 		  tick = {
-        data : date,
-        ask  : Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.000002 - 0.000001
+        data  : date,
+        ask   : Number(historyTicks[historyTicks.length - 1].ask) + Math.random() * 0.00001 - 0.000005,
+        stamp : stamp,
+        fake  : true, // помечу фейковые тики
       }
     }
     if (isEmmit[tick.data])  {
@@ -93,7 +96,7 @@ const historyTicks = [{
 			const transformTick = {
 				time  : tick.data,
 				ask   : tick.ask,
-        stamp : Math.ceil(Date.now()/1000) // возвращаю секунды
+        stamp : stamp // возвращаю секунды
 			}
 			historyTicks.push(transformTick)
 			isEmmit[tick.data] = true

@@ -60,20 +60,33 @@ function getDate() {
 }
 
 const isEmmit = {}
-const historyTicks = []
+const historyTicks = [{
+  ask: 1
+}]
 
 
 	function emitTick() {
+    const date = getDate()
 
-		const tick = db.get('ticks')
+		let tick = db.get('ticks')
 			.find({
-				data: getDate()
+				data: date
 			})
 			.value()
 
 
 		console.log(isEmmit)
-		if (tick && !isEmmit[tick.data]) {
+    if (!tick) {
+		  tick = {
+        data: date,
+        ask: Number(historyTicks[historyTicks.length - 1].ask) + Math.random()*0.00002 - 0.00001
+      }
+    }
+    if (isEmmit[tick.data])  {
+		  setTimeout(emitTick, 1000);
+		  return
+    }
+		if (tick) {
 			if(historyTicks.length === 30) {
 				historyTicks.shift()
 			}
@@ -83,7 +96,7 @@ const historyTicks = []
 			}
 			historyTicks.push(transformTick)
 			isEmmit[tick.data] = true
-			io.emit('tick',transformTick);
+			io.emit('tick', transformTick);
 		}
 		setTimeout(emitTick, 1000);
 	}

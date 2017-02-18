@@ -44,7 +44,7 @@ app.get('/generate', function (req, res) {
 		.fromFile(csvFilePath)
 		.on('json', (jsonObj) => {
 			obj.ticks.push({
-				data: jsonObj.data.replace(' ', ''),
+				time: jsonObj.data.replace(' ', ''),
 				ask: jsonObj.ask,
 			})
 		})
